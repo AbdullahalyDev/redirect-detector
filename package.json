@@ -1,0 +1,28 @@
+{
+  "name": "redirect-link-detector",
+  "version": "1.0.0",
+  "description": "The Bitly Fake Visits Tool is a utility that allows you to simulate fake visits or clicks on Bitly links. It can be useful for testing purposes, analytics evaluation, or any scenario where you need to simulate traffic on your Bitly links.",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/shelljs": "^0.8.12",
+    "axios": "^0.27.2",
+    "commander": "^11.0.0",
+    "lodash": "^4.17.21",
+    "shelljs": "^0.8.5",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.198",
+    "@types/node": "^20.6.1"
+  },
+  "pkg": {
+    "scripts": "./dist/helpers/**/*.ts",
+    "outputPath": "./build"
+  }
+}

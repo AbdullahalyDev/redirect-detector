@@ -1,0 +1,24 @@
+{
+  "ts-node": {
+    "files": true
+  },
+  "compilerOptions": {
+    "target": "ES6",
+    "rootDir": "./",
+    "outDir": "./dist",
+    "allowJs": true,
+    "strict": false,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "declaration": true,
+    "typeRoots": ["types.d.ts", "./node_modules/@types"]
+  },
+  "exclude": ["./dist/*", "node_modules"]
+}
