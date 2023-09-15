@@ -15,43 +15,56 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const commander_1 = __importDefault(require("commander"));
 const lodash_1 = __importDefault(require("lodash"));
 const axios_1 = __importDefault(require("axios"));
+const colors_1 = __importDefault(require("colors"));
+const table_1 = require("table");
 const config_1 = __importDefault(require("./config"));
 const url_helper_1 = __importDefault(require("./helpers/url.helper"));
 const application = commander_1.default.program;
-application.name("redirect link detector");
+application.name("redirect-detector");
 application.description("this project let you check if the url have redirect link");
 application.version("0.0.1");
 application.argument("url", "url to check it");
-application.action(function (argument) {
+application.option("-m --method <method>", "method of request");
+application.option("-r --redirects <number>", "number of max redirects", Number.parseInt);
+application.action(function (argument, options) {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const url = url_helper_1.default.isUrl(argument);
         if (!url) {
             console.log("invalid url format, may you forgot the proctol");
             return;
         }
+        const stream = (0, table_1.createStream)({
+            columnCount: 1,
+            columnDefault: { width: 62 },
+        });
         const request = yield axios_1.default
             .get(argument, {
-            method: "GET",
-            maxRedirects: 0,
+            method: (_a = options.method) !== null && _a !== void 0 ? _a : config_1.default.method,
+            maxRedirects: (_b = options.redirects) !== null && _b !== void 0 ? _b : config_1.default.redirects,
             headers: {
                 "User-Agent": config_1.default.agent,
+            },
+            beforeRedirect: function (record, response) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    if ((0, lodash_1.default)(response.headers).has("location")) {
+                        stream.write([record.href]);
+                    }
+                });
             },
             validateStatus: function () {
                 return true;
             },
         })
             .catch(function (error) {
-            console.log("request error:", error.message);
+            if (!error.message.includes("redirects")) {
+                console.log();
+                console.log("request error:", error.message);
+            }
         });
-        if (!request) {
-            return;
-        }
-        if (!((0, lodash_1.default)(request.headers).has("location") &&
-            (0, lodash_1.default)(request.status).inRange(300, 308))) {
-            console.log("link not include any redirect headers");
-        }
-        console.log("redirect header detected");
-        console.log(request.headers.location);
+        console.log();
+        console.log(colors_1.default.yellow("WARNING:"), "dont enter any unkown links for your safe");
+        console.log(colors_1.default.yellow("WARNING:"), 'be carefull with unsecured protocols like "http"');
     });
 });
 application.parse(process.argv);
