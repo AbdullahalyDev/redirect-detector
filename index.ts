@@ -65,6 +65,14 @@ application.action(async function (argument, options) {
       "all redirect has been detected and displayed it"
     );
   }
+  else 
+  {
+    console.log();
+    console.log(
+      colors.yellow("WARNING:"),
+      "all redirect hasn't been detected"
+    )
+  }
 
   console.log();
   console.log(
