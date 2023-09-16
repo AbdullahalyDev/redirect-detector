@@ -44,10 +44,8 @@ application.action(async function (argument, options) {
       headers: {
         "User-Agent": config.agent,
       },
-      beforeRedirect: async function (record, response) {
-        if (lodash(response.headers).has("location")) {
-          stream.write([record.href]);
-        }
+      beforeRedirect: function (record, response) {
+        stream.write([record.href]);
       },
       validateStatus: function () {
         return true;
@@ -59,6 +57,14 @@ application.action(async function (argument, options) {
         console.log("request error:", error.message);
       }
     });
+
+  if (request) {
+    console.log();
+    console.log(
+      colors.green("SUCCESS:"),
+      "all redirect has been detected and displayed it"
+    );
+  }
 
   console.log();
   console.log(

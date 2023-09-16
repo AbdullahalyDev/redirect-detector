@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const commander_1 = __importDefault(require("commander"));
-const lodash_1 = __importDefault(require("lodash"));
 const axios_1 = __importDefault(require("axios"));
 const colors_1 = __importDefault(require("colors"));
 const table_1 = require("table");
@@ -46,11 +45,7 @@ application.action(function (argument, options) {
                 "User-Agent": config_1.default.agent,
             },
             beforeRedirect: function (record, response) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    if ((0, lodash_1.default)(response.headers).has("location")) {
-                        stream.write([record.href]);
-                    }
-                });
+                stream.write([record.href]);
             },
             validateStatus: function () {
                 return true;
@@ -62,6 +57,10 @@ application.action(function (argument, options) {
                 console.log("request error:", error.message);
             }
         });
+        if (request) {
+            console.log();
+            console.log(colors_1.default.green("SUCCESS:"), "all redirect has been detected and displayed it");
+        }
         console.log();
         console.log(colors_1.default.yellow("WARNING:"), "dont enter any unkown links for your safe");
         console.log(colors_1.default.yellow("WARNING:"), 'be carefull with unsecured protocols like "http"');
